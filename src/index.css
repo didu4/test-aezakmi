@@ -1,71 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
-  /* Цвета */
-  --color-primary-50: #eff6ff;
-  --color-primary-100: #dbeafe;
-  --color-primary-500: #3b82f6;
-  --color-primary-600: #2563eb;
-  --color-primary-700: #1d4ed8;
+  /* Цвета из макета */
+  --color-primary: #18184C;
+  --color-bg: #EFEFF4;
+  --color-text-primary: #18184C;
+  --color-text-secondary: #8E93A1;
+  --color-input-bg: #F6F6FB;
   --color-success: #10b981;
   --color-warning: #f59e0b;
   --color-error: #ef4444;
-
-  /* Анимации */
-  --animate-fade-in: fadeIn 0.3s ease-in-out;
-  --animate-slide-in: slideIn 0.3s ease-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateY(-10px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
 }
 
 @layer base {
   body {
-    @apply bg-gray-50 text-gray-900 antialiased;
+    @apply bg-[#EFEFF4] text-gray-900 antialiased;
+    font-family: 'Inter', sans-serif;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 
-           focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 
-           transition-colors duration-200 font-medium;
-  }
-  
-  .btn-secondary {
-    @apply px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-lg 
-           hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500 
-           transition-colors duration-200 font-medium;
+    @apply px-4 py-2 bg-[#18184C] text-white rounded-[16px] 
+           hover:opacity-90 transition-opacity duration-200 font-semibold;
   }
   
   .input-field {
-    @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none 
-           focus:ring-2 focus:ring-primary-500 focus:border-transparent 
-           transition-all duration-200;
+    @apply w-full h-[56px] px-[20px] rounded-[16px] bg-[#F6F6FB]
+           border border-transparent focus:border-[#18184C] outline-none
+           transition-colors duration-200;
   }
   
   .input-error {
-    @apply border-red-500 focus:ring-red-500;
+    @apply border-red-500 focus:border-red-500;
   }
   
   .card {
-    @apply bg-white rounded-xl shadow-lg p-6;
+    @apply bg-white rounded-[24px] shadow-lg p-6;
   }
 }

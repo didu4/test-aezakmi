@@ -4,12 +4,12 @@ import { z } from "zod";
 export const loginSchema = z.object({
   email: z
     .string()
-    .min(1, "Email обязателен")
-    .email("Введите корректный email"),
+    .min(1, "Email is required")
+    .email("Please enter a valid email address"),
   password: z
     .string()
-    .min(1, "Пароль обязателен")
-    .min(6, "Пароль должен содержать минимум 6 символов"),
+    .min(1, "Password is required")
+    .min(6, "Password must be at least 6 characters"),
 });
 
 // Схема для карточки
