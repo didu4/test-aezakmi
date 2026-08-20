@@ -1,37 +1,26 @@
+// src/utils/validation.ts
 import { z } from "zod";
 
 // Схема для логина
 export const loginSchema = z.object({
   email: z
     .string()
-    .min(1, "Email is required")
-    .email("Please enter a valid email address"),
+    .min(1, "Email обязателен")
+    .email("Введите корректный email"),
   password: z
     .string()
-    .min(1, "Password is required")
-    .min(6, "Password must be at least 6 characters"),
+    .min(1, "Пароль обязателен")
+    .min(6, "Пароль должен содержать минимум 6 символов"),
 });
 
-// Схема для карточки
+// Схема для канбан-карточки
 export const cardSchema = z.object({
-  cardNumber: z
-    .string()
-    .min(16, "Номер карты должен содержать 16 цифр")
-    .max(19, "Номер карты слишком длинный")
-    .regex(/^[\d\s]+$/, "Только цифры"),
-
-  cardholderName: z
-    .string()
-    .min(3, "Имя должно содержать минимум 3 символа")
-    .max(50, "Имя слишком длинное")
-    .regex(/^[a-zA-Zа-яА-Я\s]+$/, "Только буквы"),
-
-  expiryDate: z.string().regex(/^(0[1-9]|1[0-2])\/([0-9]{2})$/, "Формат MM/YY"),
-
-  cvv: z.string().regex(/^[0-9]{3,4}$/, "CVV должен содержать 3-4 цифры"),
-
-  cardType: z.enum(["visa", "mastercard", "amex", "discover"]),
-  backgroundColor: z.string(),
+  title: z.string().min(1, "Title is required"),
+  description: z.string().min(1, "Description is required"),
+  priority: z.string().min(1, "Please select a priority"),
+  status: z.string().optional(),
+  assignee: z.string().optional(),
+  deadline: z.string().optional(),
 });
 
 export type LoginFormData = z.infer<typeof loginSchema>;

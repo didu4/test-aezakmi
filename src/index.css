@@ -18,6 +18,9 @@
     @apply bg-[#EFEFF4] text-gray-900 antialiased;
     font-family: 'Inter', sans-serif;
   }
+  button {
+    cursor: pointer;
+  }
 }
 
 @layer components {
