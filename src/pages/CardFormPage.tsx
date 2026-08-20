@@ -68,6 +68,10 @@ const CardFormPage = () => {
     setIsSubmitting(true);
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
+    if (!isEditing) {
+      alert(`Card created!\n\n${JSON.stringify(data, null, 2)}`);
+    }
+
     setSavedCard(data);
     setSavedTags([...selectedTags]);
     setSavedImages([...uploadedImages]);
