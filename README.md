@@ -36,7 +36,7 @@ npm run preview
 ```
 
 ## Данные для демо-доступа
-user@example.com user123; 
+user@example.com user123
 
 
 admin@example.com admin123
