@@ -1,4 +1,3 @@
-// src/pages/CurrencyTablePage.tsx
 import { useState, useMemo, useEffect } from "react";
 import {
   useCurrencies,

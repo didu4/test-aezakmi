@@ -1,8 +1,7 @@
-// src/context/CardProvider.tsx
-import { useState, type ReactNode } from 'react';
-import { CardContext } from './CardContext';
-import type { CardContextType, UploadedImage } from './CardContext';
-import type { CardFormData } from '../utils/validation';
+import { useState, type ReactNode } from "react";
+import { CardContext } from "./CardContext";
+import type { CardContextType, UploadedImage } from "./CardContext";
+import type { CardFormData } from "../utils/validation";
 
 export const CardProvider = ({ children }: { children: ReactNode }) => {
   const [savedCard, setSavedCard] = useState<CardFormData | null>(null);
@@ -18,11 +17,7 @@ export const CardProvider = ({ children }: { children: ReactNode }) => {
     setSavedImages,
   };
 
-  return (
-    <CardContext.Provider value={value}>
-      {children}
-    </CardContext.Provider>
-  );
+  return <CardContext.Provider value={value}>{children}</CardContext.Provider>;
 };
 
 export default CardProvider;

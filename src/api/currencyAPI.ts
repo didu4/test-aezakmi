@@ -1,4 +1,3 @@
-// src/api/currencyApi.ts
 import axios from "axios";
 
 const CBR_API = "https://www.cbr-xml-daily.ru";

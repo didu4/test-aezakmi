@@ -1,4 +1,3 @@
-// src/context/useCard.ts
 import { useContext } from "react";
 import { CardContext } from "./CardContext";
 

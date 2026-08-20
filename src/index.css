@@ -1,13 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
 
 @theme {
-  /* Цвета из макета */
-  --color-primary: #18184C;
-  --color-bg: #EFEFF4;
-  --color-text-primary: #18184C;
-  --color-text-secondary: #8E93A1;
-  --color-input-bg: #F6F6FB;
+  --color-primary: #18184c;
+  --color-bg: #efeff4;
+  --color-text-primary: #18184c;
+  --color-text-secondary: #8e93a1;
+  --color-input-bg: #f6f6fb;
   --color-success: #10b981;
   --color-warning: #f59e0b;
   --color-error: #ef4444;
@@ -16,7 +15,7 @@
 @layer base {
   body {
     @apply bg-[#EFEFF4] text-gray-900 antialiased;
-    font-family: 'Inter', sans-serif;
+    font-family: "Inter", sans-serif;
   }
   button {
     cursor: pointer;
@@ -28,17 +27,17 @@
     @apply px-4 py-2 bg-[#18184C] text-white rounded-[16px] 
            hover:opacity-90 transition-opacity duration-200 font-semibold;
   }
-  
+
   .input-field {
     @apply w-full h-[56px] px-[20px] rounded-[16px] bg-[#F6F6FB]
            border border-transparent focus:border-[#18184C] outline-none
            transition-colors duration-200;
   }
-  
+
   .input-error {
     @apply border-red-500 focus:border-red-500;
   }
-  
+
   .card {
     @apply bg-white rounded-[24px] shadow-lg p-6;
   }

@@ -1,29 +1,29 @@
-import { useState, type ReactNode } from 'react';
-import { AuthContext } from './AuthContext';
-import type { AuthContextType } from './AuthContext';
-import type { LoginCredentials } from '../types';
-import { mockLogin, mockLogout } from '../api/authAPI';
+import { useState, type ReactNode } from "react";
+import { AuthContext } from "./AuthContext";
+import type { AuthContextType } from "./AuthContext";
+import type { LoginCredentials } from "../types";
+import { mockLogin, mockLogout } from "../api/authAPI";
 
 // Функция начальной инициализации
 const initializeAuth = () => {
-  const token = localStorage.getItem('auth_token');
-  const userStr = localStorage.getItem('auth_user');
-  
+  const token = localStorage.getItem("auth_token");
+  const userStr = localStorage.getItem("auth_user");
+
   if (!token || !userStr) {
     return { isAuthenticated: false, user: null };
   }
-  
+
   try {
     const decoded = JSON.parse(atob(token));
     if (decoded.expires < Date.now()) {
-      localStorage.removeItem('auth_token');
-      localStorage.removeItem('auth_user');
+      localStorage.removeItem("auth_token");
+      localStorage.removeItem("auth_user");
       return { isAuthenticated: false, user: null };
     }
-    
-    return { 
-      isAuthenticated: true, 
-      user: JSON.parse(userStr) 
+
+    return {
+      isAuthenticated: true,
+      user: JSON.parse(userStr),
     };
   } catch {
     return { isAuthenticated: false, user: null };
@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const response = await mockLogin(credentials);
       setAuthState({ isAuthenticated: true, user: response.user });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Ошибка входа');
+      setError(err instanceof Error ? err.message : "Ошибка входа");
       throw err;
     } finally {
       setLoading(false);
@@ -69,11 +69,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     error,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export default AuthProvider;

@@ -1,6 +1,5 @@
-// src/context/CardContext.ts
-import { createContext } from 'react';
-import type { CardFormData } from '../utils/validation';
+import { createContext } from "react";
+import type { CardFormData } from "../utils/validation";
 
 export interface UploadedImage {
   id: string;
@@ -17,4 +16,6 @@ export interface CardContextType {
   setSavedImages: (images: UploadedImage[]) => void;
 }
 
-export const CardContext = createContext<CardContextType | undefined>(undefined);
+export const CardContext = createContext<CardContextType | undefined>(
+  undefined,
+);

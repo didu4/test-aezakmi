@@ -1,4 +1,3 @@
-// src/utils/validation.ts
 import { z } from "zod";
 
 // Схема для логина

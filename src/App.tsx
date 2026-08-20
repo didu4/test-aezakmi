@@ -1,10 +1,9 @@
-// src/App.tsx
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import ProtectedRoute from './components/ProtectedRoute';
-import Layout from './components/Layout/Layout';
-import LoginPage from './pages/LoginPage';
-import CurrencyTablePage from './pages/CurrencyTablePage';
-import CardFormPage from './pages/CardFormPage';
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Layout from "./components/Layout/Layout";
+import LoginPage from "./pages/LoginPage";
+import CurrencyTablePage from "./pages/CurrencyTablePage";
+import CardFormPage from "./pages/CardFormPage";
 
 function App() {
   return (
@@ -12,7 +11,7 @@ function App() {
       <Routes>
         {/* Публичный маршрут */}
         <Route path="/login" element={<LoginPage />} />
-        
+
         {/* Защищенные маршруты */}
         <Route
           path="/"
