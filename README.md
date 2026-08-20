@@ -1,75 +1,42 @@
-# React + TypeScript + Vite
+# Тестовое задание (Frontend React + TS)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+SPA (React + TS) по макету из Figma из 3 страниц.
 
-Currently, two official plugins are available:
+ссылка на макет: https://www.figma.com/design/p3bs7nOd0noohqkGTjOvTm/Test-Task?node-id=0-1&t=yC6nWIOopGpPEzFP-1
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## API
 
-## React Compiler
+Изначально был выбран Frankfurter API, однако, видимо, не работает без ВПН. Пришлось менять на API от ЦБ РФ: https://www.cbr-xml-daily.ru/daily_json.js
+В связи с таким выбором API стоит сказать, что в таблице курсы относительно доллара. На сайте ЦБ они - относительно рубля. Поэтому цифры могут не совпадать.
+Также отмечу, что ЦБ не предоставляет данные для графика, поэтому у них они моковые.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Возможно, при необходимости, изменю на более корректный API.
 
-## Expanding the ESLint configuration
+## Установка и запуск
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+# Клонирование
+```bash
+git clone https://github.com/didu4/test-aezakmi.git
+```
+# Установка зависимостей
+```bash
+npm install
+```
+# Запуск сервера
+```bash
+npm run dev
+```
+# Сборка
+```bash
+npm run build
+```
+# Превью сборки
+```bash
+npm run preview
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Данные для демо-доступа
+user@example.com user123
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
-```
+admin@example.com admin123
