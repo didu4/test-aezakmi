@@ -15,28 +15,41 @@ SPA (React + TS) по макету из Figma из 3 страниц.
 ## Установка и запуск
 
 # Клонирование
+
 ```bash
 git clone https://github.com/didu4/test-aezakmi.git
 ```
+
 # Установка зависимостей
+
 ```bash
 npm install
 ```
+
 # Запуск сервера
+
 ```bash
 npm run dev
 ```
+
 # Сборка
+
 ```bash
 npm run build
 ```
+
 # Превью сборки
+
 ```bash
 npm run preview
 ```
 
 ## Данные для демо-доступа
+
 user@example.com user123
 
-
 admin@example.com admin123
+
+## Ссылка на деплой (Vercel)
+
+https://test-aezakmi.vercel.app
