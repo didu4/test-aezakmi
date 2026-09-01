@@ -2,7 +2,6 @@ import axios from "axios";
 
 const CBR_API = "https://www.cbr-xml-daily.ru";
 
-// Тип для данных от API ЦБ РФ
 interface CbrValute {
   ID: string;
   NumCode: string;
@@ -23,17 +22,28 @@ export const getCurrentRates = async (base: string = "USD") => {
   const response = await axios.get<CbrResponse>(`${CBR_API}/daily_json.js`);
   const data = response.data;
 
-  const ratesInRub: Record<string, number> = {};
+  const rubRates: Record<string, number> = {};
   Object.entries(data.Valute).forEach(([code, info]) => {
-    ratesInRub[code] = info.Value / info.Nominal;
+    rubRates[code] = info.Value / info.Nominal;
   });
-  ratesInRub["RUB"] = 1;
+  rubRates["RUB"] = 1;
+
+  if (base === "RUB") {
+    return {
+      base: base,
+      date: data.Date,
+      rates: rubRates,
+    };
+  }
+
+  const baseRate = rubRates[base];
+  if (!baseRate) {
+    throw new Error(`Currency ${base} not found`);
+  }
 
   const rates: Record<string, number> = {};
-  const baseRate = ratesInRub[base] || 1;
-
-  Object.entries(ratesInRub).forEach(([code, rate]) => {
-    rates[code] = baseRate / rate;
+  Object.entries(rubRates).forEach(([code, rate]) => {
+    rates[code] = rate / baseRate;
   });
 
   return {

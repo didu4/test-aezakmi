@@ -1,6 +1,5 @@
 import type { User, LoginCredentials, AuthResponse } from "../types";
 
-// Мок-база данных пользователей
 const MOCK_USERS: (User & { password: string })[] = [
   {
     id: "1",
