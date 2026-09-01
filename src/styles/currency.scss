@@ -1,0 +1,362 @@
+@import "variables";
+
+.currency-page {
+  padding: 16px;
+
+  @media (min-width: 768px) {
+    padding: 24px;
+  }
+}
+
+.currency-header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+
+  &--with-panel {
+    @media (min-width: 1024px) {
+      max-width: calc(100% - 444px);
+    }
+  }
+}
+
+.currency-title {
+  font-family: $font-family;
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 100%;
+  color: $color-text-primary;
+
+  @media (min-width: 768px) {
+    font-size: 26px;
+  }
+}
+
+.currency-date {
+  display: inline-block;
+  width: fit-content;
+  padding: 7px 14px;
+  border-radius: 10px;
+  background-color: $color-blue-bg;
+  font-family: $font-family;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 100%;
+  color: $color-blue;
+}
+
+.currency-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-start;
+
+  @media (min-width: 1024px) {
+    flex-direction: row;
+    gap: 24px;
+    align-items: flex-start;
+  }
+}
+
+.currency-table-wrapper {
+  background: $color-white;
+  border-radius: 20px;
+  padding: 4px 12px;
+  box-shadow: $shadow-card;
+  overflow-x: auto;
+  width: 100%;
+
+  @media (min-width: 768px) {
+    padding: 4px 20px;
+  }
+
+  &--with-panel {
+    @media (min-width: 1024px) {
+      flex: 1;
+      width: auto;
+    }
+  }
+}
+
+.currency-table {
+  width: 100%;
+  min-width: 500px;
+  border-collapse: collapse;
+}
+
+.currency-th {
+  text-align: left;
+  padding: 8px;
+  font-family: $font-family;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 100%;
+  color: $color-text-secondary;
+
+  @media (min-width: 768px) {
+    padding: 12px;
+    font-size: 12px;
+  }
+}
+
+.currency-td {
+  padding: 12px 8px;
+  border-top: 1px solid $color-border-light;
+  font-family: $font-family;
+  font-weight: 400;
+  font-size: 13px;
+  color: $color-text-primary;
+
+  @media (min-width: 768px) {
+    padding: 16px 12px;
+    font-size: 13px;
+  }
+
+  &--bold {
+    font-weight: 600;
+  }
+
+  &--time {
+    color: $color-text-primary;
+  }
+}
+
+.currency-row {
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #f9fafb;
+
+    .currency-td:first-child {
+      border-radius: 12px 0 0 12px;
+    }
+
+    .currency-td:last-child {
+      border-radius: 0 12px 12px 0;
+    }
+  }
+
+  &--selected {
+    background-color: $color-blue-bg;
+
+    .currency-td:first-child {
+      border-radius: 12px 0 0 12px;
+    }
+
+    .currency-td:last-child {
+      border-radius: 0 12px 12px 0;
+    }
+
+    &:hover {
+      background-color: $color-blue-bg;
+    }
+  }
+}
+
+.currency-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  @media (min-width: 768px) {
+    gap: 12px;
+  }
+}
+
+.currency-flag {
+  width: 20px;
+  height: 14px;
+  object-fit: cover;
+  border-radius: 2px;
+
+  @media (min-width: 768px) {
+    width: 24px;
+    height: 18px;
+  }
+}
+
+.currency-change {
+  display: inline-block;
+  padding: 4px 6px;
+  border-radius: 4px;
+  font-family: $font-family;
+  font-weight: 600;
+  font-size: 11px;
+
+  @media (min-width: 768px) {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+
+  &--up {
+    color: $color-green;
+    background-color: $color-green-bg;
+  }
+
+  &--down {
+    color: $color-error;
+    background-color: $color-red-bg;
+  }
+}
+
+.currency-back-btn {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 8px 16px;
+  border-radius: 10px;
+  background-color: $color-blue-bg;
+  color: $color-blue;
+  font-family: $font-family;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 100%;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: darken(#e7eeff, 5%);
+  }
+}
+
+.currency-panel {
+  background: $color-white;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: $shadow-card;
+  height: 844px;
+  width: 420px;
+  flex-shrink: 0;
+  @media (min-width: 1024px) {
+    margin-top: -56px;
+  }
+
+  @media (max-width: 1023px) {
+    width: 100%;
+    padding: 16px;
+    margin-top: 0;
+    height: auto;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+
+  &__flag {
+    width: 24px;
+    height: 18px;
+    object-fit: cover;
+    border-radius: 2px;
+  }
+
+  &__title {
+    font-family: $font-family;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 100%;
+    color: $color-text-primary;
+  }
+
+  &__subtitle {
+    font-family: $font-family;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 100%;
+    color: $color-text-secondary;
+    margin-bottom: 20px;
+  }
+
+  &__stats {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  &__value {
+    font-family: $font-family;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 100%;
+    color: $color-text-primary;
+  }
+
+  &__change {
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-family: $font-family;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 100%;
+
+    &--up {
+      color: $color-green;
+      background-color: $color-green-bg;
+    }
+
+    &--down {
+      color: $color-error;
+      background-color: $color-red-bg;
+    }
+  }
+
+  &__chart-container {
+    width: 100%;
+    height: 200px;
+    border-radius: 14px;
+    padding: 5px 11px;
+    margin-bottom: 20px;
+
+    &--up {
+      background-color: #f2fcf5;
+    }
+
+    &--down {
+      background-color: #fff5f5;
+    }
+  }
+
+  &__periods {
+    display: flex;
+    gap: 8px;
+  }
+
+  &__period-btn {
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-family: $font-family;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 100%;
+    cursor: pointer;
+    transition:
+      background-color 0.2s,
+      color 0.2s;
+
+    &--active {
+      background-color: $color-primary;
+      color: $color-white;
+    }
+
+    &--inactive {
+      background-color: #f0f1f6;
+      color: $color-text-secondary;
+
+      &:hover {
+        background-color: #e5e6ec;
+      }
+    }
+  }
+}

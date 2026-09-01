@@ -1,7 +1,7 @@
-// src/components/Layout/Layout.tsx
 import { useState } from "react";
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/useAuth";
+import "../../styles/layout.scss";
 
 const Layout = () => {
   const { logout } = useAuth();
@@ -29,102 +29,50 @@ const Layout = () => {
   ];
 
   return (
-    <div className="min-h-screen flex bg-[#EFEFF4]">
-      {/* Sidebar */}
+    <div className="layout">
       <aside
-        className={`bg-white flex flex-col transition-all duration-300 ${
-          isSidebarOpen ? "w-[220px]" : "w-[72px]"
-        }`}
-        style={{
-          boxShadow: "2px 0px 8px 0px rgba(0, 0, 0, 0.04)",
-        }}
+        className={`sidebar ${isSidebarOpen ? "sidebar--expanded" : "sidebar--collapsed"}`}
       >
-        {/* Верхняя часть */}
-        <div className="flex flex-col px-[10px] pt-[20px] pb-[10px]">
-          {/* Логотип (мешок с деньгами) */}
+        <div className="sidebar__top">
           <button
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className={`flex items-center rounded-[14px] transition-colors ${
-              isSidebarOpen
-                ? "w-full px-[12px] gap-[12px] h-[44px]"
-                : "w-[52px] h-[44px] mx-auto justify-center"
-            } hover:bg-gray-50`}
+            className={`sidebar__logo-btn ${isSidebarOpen ? "sidebar__logo-btn--expanded" : "sidebar__logo-btn--collapsed"}`}
           >
-            <span className="text-2xl flex-shrink-0">💰</span>
+            <span className="sidebar__logo-icon">💰</span>
             {isSidebarOpen && (
-              <span
-                className="text-[20px] font-bold whitespace-nowrap"
-                style={{
-                  color: "#18184C",
-                  fontFamily: "Inter, sans-serif",
-                  fontWeight: 700,
-                  lineHeight: "100%",
-                }}
-              >
-                Dashboard
-              </span>
+              <span className="sidebar__logo-text">Dashboard</span>
             )}
           </button>
 
-          {/* Разделитель после Dashboard (только когда открыт) */}
-          {isSidebarOpen && (
-            <div
-              className="w-full h-[1px] my-[24px]"
-              style={{ backgroundColor: "#E3E4EA" }}
-            />
-          )}
+          {isSidebarOpen && <div className="sidebar__divider" />}
 
-          {/* Увеличенный отступ когда сайдбар закрыт */}
-          {!isSidebarOpen && <div className="h-[24px]" />}
+          {!isSidebarOpen && <div className="sidebar__spacer" />}
 
-          {/* Навигация */}
-          {isSidebarOpen && (
-            <p
-              className="text-[10px] font-medium uppercase tracking-wider mb-[8px] px-[12px]"
-              style={{ color: "#8E93A1", fontFamily: "Inter, sans-serif" }}
-            >
-              Menu
-            </p>
-          )}
+          {isSidebarOpen && <p className="sidebar__menu-label">Menu</p>}
 
-          <nav className="flex flex-col gap-[4px]">
+          <nav className="sidebar__nav">
             {navItems.map((item) => (
               <NavLink
                 key={item.to}
                 to={item.to}
                 className={({ isActive }) => `
-                  flex items-center rounded-[14px] transition-all
-                  ${
-                    isSidebarOpen
-                      ? "px-[12px] w-full gap-[12px]"
-                      : "w-[52px] mx-auto flex-col gap-[4px] justify-center"
-                  }
-                  h-[58px] py-[10px]
-                  ${isActive ? "bg-[#E7EEFF]" : "hover:bg-gray-50"}
+                  sidebar__nav-link
+                  ${isSidebarOpen ? "sidebar__nav-link--expanded" : "sidebar__nav-link--collapsed"}
+                  ${isActive ? "sidebar__nav-link--active" : ""}
                 `}
               >
                 {({ isActive }) => (
                   <>
-                    <span className="text-xl flex-shrink-0">{item.icon}</span>
+                    <span className="sidebar__nav-icon">{item.icon}</span>
                     {isSidebarOpen ? (
                       <span
-                        className="text-[10px] font-semibold whitespace-nowrap"
-                        style={{
-                          color: isActive ? "#2563EB" : "#8E93A1",
-                          fontFamily: "Inter, sans-serif",
-                          fontWeight: isActive ? 600 : 500,
-                        }}
+                        className={`sidebar__nav-label-full ${isActive ? "sidebar__nav-label-full--active" : "sidebar__nav-label-full--inactive"}`}
                       >
                         {item.label}
                       </span>
                     ) : (
                       <span
-                        className="text-[10px] whitespace-nowrap"
-                        style={{
-                          color: isActive ? "#2563EB" : "#8E93A1",
-                          fontFamily: "Inter, sans-serif",
-                          fontWeight: isActive ? 600 : 500,
-                        }}
+                        className={`sidebar__nav-label-short ${isActive ? "sidebar__nav-label-short--active" : "sidebar__nav-label-short--inactive"}`}
                       >
                         {item.shortLabel}
                       </span>
@@ -136,54 +84,24 @@ const Layout = () => {
           </nav>
         </div>
 
-        {/* Нижняя часть - Logout */}
-        <div className="mt-auto px-[10px] pb-[20px]">
-          {/* Разделитель перед Logout (только когда открыт) */}
-          {isSidebarOpen && (
-            <div
-              className="w-full h-[1px] mb-[16px]"
-              style={{ backgroundColor: "#E3E4EA" }}
-            />
-          )}
+        <div className="sidebar__bottom">
+          {isSidebarOpen && <div className="sidebar__divider" />}
 
           <button
             onClick={handleLogout}
-            className={`flex items-center rounded-[14px] transition-all ${
-              isSidebarOpen
-                ? "px-[12px] w-full gap-[12px]"
-                : "w-[52px] mx-auto flex-col gap-[4px] justify-center"
-            } h-[54px] py-[10px] hover:bg-gray-50`}
+            className={`sidebar__logout-btn ${isSidebarOpen ? "sidebar__logout-btn--expanded" : "sidebar__logout-btn--collapsed"}`}
           >
-            <span className="text-xl flex-shrink-0">🚪</span>
+            <span className="sidebar__logout-icon">🚪</span>
             {isSidebarOpen ? (
-              <span
-                className="text-[10px] font-medium whitespace-nowrap"
-                style={{
-                  color: "#EA3A3A",
-                  fontFamily: "Inter, sans-serif",
-                  fontWeight: 500,
-                }}
-              >
-                Logout
-              </span>
+              <span className="sidebar__logout-label-full">Logout</span>
             ) : (
-              <span
-                className="text-[10px] whitespace-nowrap"
-                style={{
-                  color: "#EA3A3A",
-                  fontFamily: "Inter, sans-serif",
-                  fontWeight: 500,
-                }}
-              >
-                Logout
-              </span>
+              <span className="sidebar__logout-label-short">Logout</span>
             )}
           </button>
         </div>
       </aside>
 
-      {/* Main content */}
-      <main className="flex-1 overflow-y-auto">
+      <main className="main-content">
         <Outlet />
       </main>
     </div>

@@ -1,3 +1,4 @@
+// src/pages/CurrencyTablePage.tsx
 import { useState, useMemo, useEffect } from "react";
 import {
   useCurrencies,
@@ -8,14 +9,15 @@ import { getCurrencyFlag } from "../api/currencyAPI";
 import Loading from "../components/UI/Loading";
 import Error from "../components/UI/Error";
 import {
-  LineChart,
-  Line,
+  AreaChart,
+  Area,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import "../styles/currency.scss";
 
 const CurrencyTablePage = () => {
   const { loading: currenciesLoading, error: currenciesError } =
@@ -40,10 +42,9 @@ const CurrencyTablePage = () => {
     periodDays[selectedPeriod] || 30,
   );
 
-  // Определяем мобильное устройство
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+      setIsMobile(window.innerWidth < 1024);
     };
 
     checkMobile();
@@ -51,7 +52,6 @@ const CurrencyTablePage = () => {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Обновляем время каждую минуту
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
@@ -140,111 +140,71 @@ const CurrencyTablePage = () => {
     );
   }
 
-  // Мобильный вид с выбранной валютой
-  if (window.innerWidth < 1024 && selectedCurrency) {
+  if (isMobile && selectedCurrency) {
     return (
-      <div className="p-[16px]">
-        {/* Заголовок */}
-        <div className="flex flex-col gap-[12px] mb-[16px]">
-          <h1
-            className="text-[24px] font-bold"
-            style={{ color: "#18184C", fontFamily: "Inter, sans-serif" }}
-          >
-            Exchange rates
-          </h1>
-          <div
-            className="px-[14px] py-[7px] rounded-[10px] inline-block w-fit"
-            style={{ backgroundColor: "#E7EEFF" }}
-          >
-            <span
-              className="text-[13px] font-semibold"
-              style={{ color: "#2563EB", fontFamily: "Inter, sans-serif" }}
-            >
-              {formattedDate}
-            </span>
-          </div>
-        </div>
-
-        {/* Кнопка назад */}
+      <div className="currency-page">
         <button
           onClick={() => setSelectedCurrency(null)}
-          className="mb-[16px] px-[16px] py-[8px] rounded-[10px] text-[14px] font-semibold cursor-pointer transition-all hover:bg-gray-100"
-          style={{
-            color: "#2563EB",
-            fontFamily: "Inter, sans-serif",
-            backgroundColor: "#E7EEFF",
-          }}
+          className="currency-back-btn"
         >
           ← Back to table
         </button>
 
-        {/* Панель с графиком */}
-        <div
-          className="bg-white rounded-[20px] p-[16px]"
-          style={{ boxShadow: "0px 2px 12px 0px rgba(0, 0, 0, 0.04)" }}
-        >
-          <div className="flex items-center gap-[8px] mb-[4px]">
+        <div className="currency-panel">
+          <div className="currency-panel__header">
             <img
               src={getCurrencyFlag(selectedCurrency)}
               alt={`${selectedCurrency} flag`}
-              className="w-[24px] h-[18px] object-cover rounded"
+              className="currency-panel__flag"
             />
-            <h2
-              className="text-[18px] font-bold"
-              style={{ color: "#18184C", fontFamily: "Inter, sans-serif" }}
-            >
-              {selectedCurrency}/USD
-            </h2>
+            <h2 className="currency-panel__title">{selectedCurrency} / USD</h2>
           </div>
 
-          <p
-            className="text-[13px] mb-[16px]"
-            style={{ color: "#8E93A1", fontFamily: "Inter, sans-serif" }}
-          >
+          <p className="currency-panel__subtitle">
             {getPeriodLabel(selectedPeriod)}
           </p>
 
-          <div className="flex items-center gap-[12px] mb-[16px]">
-            <span
-              className="text-[28px] font-bold"
-              style={{ color: "#18184C", fontFamily: "Inter, sans-serif" }}
-            >
+          <div className="currency-panel__stats">
+            <span className="currency-panel__value">
               {selectedRate?.toFixed(4) || "0.0000"}
             </span>
             <span
-              className="px-[10px] py-[5px] rounded-[8px] text-[13px] font-semibold"
-              style={{
-                color: selectedChange > 0 ? "#22B14C" : "#EA3A3A",
-                backgroundColor: selectedChange > 0 ? "#E0F8E6" : "#FFF2F2",
-                fontFamily: "Inter, sans-serif",
-              }}
+              className={`currency-panel__change ${selectedChange > 0 ? "currency-panel__change--up" : "currency-panel__change--down"}`}
             >
               {selectedChange > 0 ? "▲" : "▼"}{" "}
               {Math.abs(selectedChange).toFixed(2)}%
             </span>
           </div>
 
-          <div className="h-[250px] mb-[16px]">
+          <div
+            className={`currency-panel__chart-container ${selectedChange > 0 ? "currency-panel__chart-container--up" : "currency-panel__chart-container--down"}`}
+          >
             {historyLoading ? (
               <Loading message="Загрузка графика..." />
             ) : (
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={chartData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#E3E4EA" />
-                  <XAxis
-                    dataKey="date"
-                    tick={{ fontSize: 9, fill: "#8E93A1" }}
-                    tickFormatter={(date) =>
-                      new Date(date).toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                      })
-                    }
-                  />
+                <AreaChart data={chartData}>
+                  <defs>
+                    <linearGradient id="chartFill" x1="0" y1="0" x2="0" y2="1">
+                      <stop
+                        offset="5%"
+                        stopColor={selectedChange > 0 ? "#22B14C" : "#EA3A3A"}
+                        stopOpacity={0.14}
+                      />
+                      <stop
+                        offset="95%"
+                        stopColor={selectedChange > 0 ? "#22B14C" : "#EA3A3A"}
+                        stopOpacity={0}
+                      />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="transparent" />
+                  <XAxis dataKey="date" tick={false} axisLine={false} />
                   <YAxis
-                    tick={{ fontSize: 9, fill: "#8E93A1" }}
+                    tick={false}
+                    axisLine={false}
+                    width={0}
                     domain={["auto", "auto"]}
-                    width={40}
                   />
                   <Tooltip
                     formatter={(value) => [
@@ -255,30 +215,25 @@ const CurrencyTablePage = () => {
                       new Date(String(label)).toLocaleDateString("ru-RU")
                     }
                   />
-                  <Line
+                  <Area
                     type="monotone"
                     dataKey="rate"
-                    stroke="#2563EB"
+                    stroke={selectedChange > 0 ? "#22B14C" : "#EA3A3A"}
                     strokeWidth={2}
+                    fill="url(#chartFill)"
                     dot={false}
                   />
-                </LineChart>
+                </AreaChart>
               </ResponsiveContainer>
             )}
           </div>
 
-          <div className="flex gap-[8px] flex-wrap">
+          <div className="currency-panel__periods">
             {["1W", "1M", "3M", "6M", "1Y"].map((period) => (
               <button
                 key={period}
                 onClick={() => setSelectedPeriod(period)}
-                className="px-[12px] py-[8px] rounded-[10px] text-[12px] font-semibold transition-colors cursor-pointer"
-                style={{
-                  backgroundColor:
-                    selectedPeriod === period ? "#18184C" : "#F0F1F6",
-                  color: selectedPeriod === period ? "#FFFFFF" : "#8E93A1",
-                  fontFamily: "Inter, sans-serif",
-                }}
+                className={`currency-panel__period-btn ${selectedPeriod === period ? "currency-panel__period-btn--active" : "currency-panel__period-btn--inactive"}`}
               >
                 {period}
               </button>
@@ -290,40 +245,21 @@ const CurrencyTablePage = () => {
   }
 
   return (
-    <div className="p-[16px] md:p-[24px]">
-      {/* Заголовок */}
-      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-[12px] mb-[16px] md:mb-[24px]">
-        <h1
-          className="text-[24px] md:text-[32px] font-bold"
-          style={{ color: "#18184C", fontFamily: "Inter, sans-serif" }}
-        >
-          Exchange rates
-        </h1>
-        <div
-          className="px-[14px] py-[7px] rounded-[10px] inline-block w-fit"
-          style={{ backgroundColor: "#E7EEFF" }}
-        >
-          <span
-            className="text-[13px] font-semibold"
-            style={{ color: "#2563EB", fontFamily: "Inter, sans-serif" }}
-          >
-            {formattedDate}
-          </span>
-        </div>
+    <div className="currency-page">
+      <div
+        className={`currency-header ${selectedCurrency && !isMobile ? "currency-header--with-panel" : ""}`}
+      >
+        <h1 className="currency-title">Exchange rates</h1>
+        <div className="currency-date">{formattedDate}</div>
       </div>
 
-      {/* Контейнер таблицы и панели */}
-      <div className="flex flex-col lg:flex-row gap-[16px] md:gap-[24px]">
-        {/* Таблица */}
+      <div className="currency-content">
         <div
-          className={`bg-white rounded-[20px] px-[12px] md:px-[20px] py-[4px] overflow-x-auto ${
-            selectedCurrency ? "lg:flex-1" : "w-full"
-          }`}
-          style={{ boxShadow: "0px 2px 12px 0px rgba(0, 0, 0, 0.04)" }}
+          className={`currency-table-wrapper ${selectedCurrency && !isMobile ? "currency-table-wrapper--with-panel" : ""}`}
         >
-          <table className="w-full min-w-[500px]">
+          <table className="currency-table">
             <thead>
-              <tr className="h-[39px]">
+              <tr>
                 {[
                   "Currency",
                   "Surrender",
@@ -331,16 +267,7 @@ const CurrencyTablePage = () => {
                   "Course",
                   ...(!selectedCurrency ? ["Change", "Time"] : []),
                 ].map((header) => (
-                  <th
-                    key={header}
-                    className="text-left px-[8px] md:px-[12px]"
-                    style={{
-                      color: "#8E93A1",
-                      fontFamily: "Inter, sans-serif",
-                      fontWeight: 500,
-                      fontSize: "11px md:text-[12px]",
-                    }}
-                  >
+                  <th key={header} className="currency-th">
                     {header}
                   </th>
                 ))}
@@ -357,70 +284,46 @@ const CurrencyTablePage = () => {
                     onClick={() =>
                       setSelectedCurrency(isSelected ? null : code)
                     }
-                    className="cursor-pointer transition-colors"
-                    style={{
-                      backgroundColor: isSelected ? "#E7EEFF" : "transparent",
-                    }}
+                    className={`currency-row ${isSelected ? "currency-row--selected" : ""}`}
                   >
-                    <td className="px-[8px] md:px-[12px] py-[12px] md:py-[16px] border-t border-[#E3E4EA]">
-                      <div className="flex items-center gap-[8px] md:gap-[12px]">
+                    <td className="currency-td">
+                      <div className="currency-cell">
                         <img
                           src={getCurrencyFlag(code)}
                           alt={`${code} flag`}
-                          className="w-[20px] h-[14px] md:w-[24px] md:h-[18px] object-cover rounded"
+                          className="currency-flag"
                         />
-                        <span
-                          className={`${isSelected ? "font-bold" : "font-medium"} text-[12px] md:text-[14px]`}
-                          style={{
-                            color: isSelected ? "#18184C" : "#333",
-                            fontFamily: "Inter, sans-serif",
-                          }}
-                        >
+                        <span className={isSelected ? "currency-td--bold" : ""}>
                           {code}
                         </span>
                       </div>
                     </td>
                     <td
-                      className={`px-[8px] md:px-[12px] py-[12px] md:py-[16px] border-t border-[#E3E4EA] text-[12px] md:text-[14px] ${isSelected ? "font-bold" : "font-normal"}`}
-                      style={{ fontFamily: "Inter, sans-serif" }}
+                      className={`currency-td ${isSelected ? "currency-td--bold" : ""}`}
                     >
                       {(rate * 1.01).toFixed(4)}
                     </td>
                     <td
-                      className={`px-[8px] md:px-[12px] py-[12px] md:py-[16px] border-t border-[#E3E4EA] text-[12px] md:text-[14px] ${isSelected ? "font-bold" : "font-normal"}`}
-                      style={{ fontFamily: "Inter, sans-serif" }}
+                      className={`currency-td ${isSelected ? "currency-td--bold" : ""}`}
                     >
                       {(rate * 0.99).toFixed(4)}
                     </td>
                     <td
-                      className={`px-[8px] md:px-[12px] py-[12px] md:py-[16px] border-t border-[#E3E4EA] text-[12px] md:text-[14px] ${isSelected ? "font-bold" : "font-normal"}`}
-                      style={{ fontFamily: "Inter, sans-serif" }}
+                      className={`currency-td ${isSelected ? "currency-td--bold" : ""}`}
                     >
                       {rate.toFixed(4)}
                     </td>
                     {!selectedCurrency && (
                       <>
-                        <td className="px-[8px] md:px-[12px] py-[12px] md:py-[16px] border-t border-[#E3E4EA]">
+                        <td className="currency-td">
                           <span
-                            className="text-[11px] md:text-[12px] font-semibold px-[6px] md:px-[8px] py-[4px] rounded"
-                            style={{
-                              color: change > 0 ? "#22B14C" : "#EA3A3A",
-                              backgroundColor:
-                                change > 0 ? "#E0F8E6" : "#FFF2F2",
-                              fontFamily: "Inter, sans-serif",
-                            }}
+                            className={`currency-change ${change > 0 ? "currency-change--up" : "currency-change--down"}`}
                           >
                             {change > 0 ? "▲" : "▼"}{" "}
                             {Math.abs(change).toFixed(2)}%
                           </span>
                         </td>
-                        <td
-                          className="px-[8px] md:px-[12px] py-[12px] md:py-[16px] border-t border-[#E3E4EA] text-[12px] md:text-[14px]"
-                          style={{
-                            color: "#8E93A1",
-                            fontFamily: "Inter, sans-serif",
-                          }}
-                        >
+                        <td className="currency-td currency-td--time">
                           {currentTime}
                         </td>
                       </>
@@ -432,73 +335,67 @@ const CurrencyTablePage = () => {
           </table>
         </div>
 
-        {/* Панель с графиком — только на десктопе */}
         {selectedCurrency && !isMobile && (
-          <div
-            className="hidden lg:block w-[420px] bg-white rounded-[20px] p-[24px] shrink-0"
-            style={{ boxShadow: "0px 2px 12px 0px rgba(0, 0, 0, 0.04)" }}
-          >
-            {/* Содержимое панели */}
-            <div className="flex items-center gap-[8px] mb-[4px]">
+          <div className="currency-panel">
+            <div className="currency-panel__header">
               <img
                 src={getCurrencyFlag(selectedCurrency)}
                 alt={`${selectedCurrency} flag`}
-                className="w-[24px] h-[18px] object-cover rounded"
+                className="currency-panel__flag"
               />
-              <h2
-                className="text-[20px] font-bold"
-                style={{ color: "#18184C", fontFamily: "Inter, sans-serif" }}
-              >
-                {selectedCurrency}/USD
-              </h2>
+              <h2 className="currency-panel__title">{selectedCurrency}/USD</h2>
             </div>
 
-            <p
-              className="text-[13px] mb-[20px]"
-              style={{ color: "#8E93A1", fontFamily: "Inter, sans-serif" }}
-            >
+            <p className="currency-panel__subtitle">
               {getPeriodLabel(selectedPeriod)}
             </p>
 
-            <div className="flex items-center gap-[12px] mb-[20px]">
-              <span
-                className="text-[36px] font-bold"
-                style={{ color: "#18184C", fontFamily: "Inter, sans-serif" }}
-              >
+            <div className="currency-panel__stats">
+              <span className="currency-panel__value">
                 {selectedRate?.toFixed(4) || "0.0000"}
               </span>
               <span
-                className="px-[10px] py-[5px] rounded-[8px] text-[14px] font-semibold"
-                style={{
-                  color: selectedChange > 0 ? "#22B14C" : "#EA3A3A",
-                  backgroundColor: selectedChange > 0 ? "#E0F8E6" : "#FFF2F2",
-                  fontFamily: "Inter, sans-serif",
-                }}
+                className={`currency-panel__change ${selectedChange > 0 ? "currency-panel__change--up" : "currency-panel__change--down"}`}
               >
                 {selectedChange > 0 ? "▲" : "▼"}{" "}
                 {Math.abs(selectedChange).toFixed(2)}%
               </span>
             </div>
 
-            <div className="h-[400px] mb-[20px]">
+            <div
+              className={`currency-panel__chart-container ${selectedChange > 0 ? "currency-panel__chart-container--up" : "currency-panel__chart-container--down"}`}
+            >
               {historyLoading ? (
                 <Loading message="Загрузка графика..." />
               ) : (
                 <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={chartData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#E3E4EA" />
-                    <XAxis
-                      dataKey="date"
-                      tick={{ fontSize: 10, fill: "#8E93A1" }}
-                      tickFormatter={(date) =>
-                        new Date(date).toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                        })
-                      }
-                    />
+                  <AreaChart data={chartData}>
+                    <defs>
+                      <linearGradient
+                        id="chartFill"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                      >
+                        <stop
+                          offset="5%"
+                          stopColor={selectedChange > 0 ? "#22B14C" : "#EA3A3A"}
+                          stopOpacity={0.14}
+                        />
+                        <stop
+                          offset="95%"
+                          stopColor={selectedChange > 0 ? "#22B14C" : "#EA3A3A"}
+                          stopOpacity={0}
+                        />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="transparent" />
+                    <XAxis dataKey="date" tick={false} axisLine={false} />
                     <YAxis
-                      tick={{ fontSize: 10, fill: "#8E93A1" }}
+                      tick={false}
+                      axisLine={false}
+                      width={0}
                       domain={["auto", "auto"]}
                     />
                     <Tooltip
@@ -510,30 +407,25 @@ const CurrencyTablePage = () => {
                         new Date(String(label)).toLocaleDateString("ru-RU")
                       }
                     />
-                    <Line
+                    <Area
                       type="monotone"
                       dataKey="rate"
-                      stroke="#2563EB"
+                      stroke={selectedChange > 0 ? "#22B14C" : "#EA3A3A"}
                       strokeWidth={2}
+                      fill="url(#chartFill)"
                       dot={false}
                     />
-                  </LineChart>
+                  </AreaChart>
                 </ResponsiveContainer>
               )}
             </div>
 
-            <div className="flex gap-[8px]">
+            <div className="currency-panel__periods">
               {["1W", "1M", "3M", "6M", "1Y"].map((period) => (
                 <button
                   key={period}
                   onClick={() => setSelectedPeriod(period)}
-                  className="px-[16px] py-[8px] rounded-[10px] text-[13px] font-semibold transition-colors cursor-pointer"
-                  style={{
-                    backgroundColor:
-                      selectedPeriod === period ? "#18184C" : "#F0F1F6",
-                    color: selectedPeriod === period ? "#FFFFFF" : "#8E93A1",
-                    fontFamily: "Inter, sans-serif",
-                  }}
+                  className={`currency-panel__period-btn ${selectedPeriod === period ? "currency-panel__period-btn--active" : "currency-panel__period-btn--inactive"}`}
                 >
                   {period}
                 </button>

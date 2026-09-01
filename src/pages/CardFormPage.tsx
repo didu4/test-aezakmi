@@ -5,6 +5,7 @@ import { useCard } from "../context/useCard";
 import { cardSchema } from "../utils/validation";
 import type { CardFormData } from "../utils/validation";
 import type { UploadedImage } from "../context/CardContext";
+import "../styles/card-form.scss";
 
 const AVAILABLE_TAGS = [
   { name: "Design", bg: "#EEE4FF", color: "#814EE0" },
@@ -160,65 +161,20 @@ const CardFormPage = () => {
     return option || PRIORITY_OPTIONS[0];
   };
 
-  const inputStyle = {
-    fontFamily: "Inter, sans-serif",
-    backgroundColor: "#F2F3F9",
-    borderRadius: "14px",
-  };
-
-  const labelStyle = {
-    fontFamily: "Inter, sans-serif",
-    fontWeight: 500,
-    fontSize: "13px",
-    color: "#18184C",
-  };
-
-  const placeholderStyle = {
-    fontFamily: "Inter, sans-serif",
-    fontWeight: 400,
-    fontSize: "14px",
-    color: "#8E93A1",
-  };
-
-  // Если карточка сохранена и не в режиме редактирования - показываем превью
   if (savedCard && !isEditing) {
     const priorityStyle = getPriorityStyle(savedCard.priority);
 
     return (
-      <div className="p-[24px]">
-        <h1
-          className="text-[26px] font-bold mb-[24px]"
-          style={{
-            color: "#18184C",
-            fontFamily: "Inter, sans-serif",
-            fontWeight: 700,
-          }}
-        >
-          Card Preview
-        </h1>
+      <div className="card-form-page">
+        <h1 className="card-preview-title">Card Preview</h1>
 
-        <div
-          className="bg-white rounded-[20px] p-[32px]"
-          style={{
-            boxShadow:
-              "0px 6px 24px 0px rgba(0, 0, 0, 0.06), 0px 2px 6px 0px rgba(0, 0, 0, 0.02)",
-          }}
-        >
-          <div className="flex gap-[8px] mb-[18px]">
+        <div className="card-preview-container">
+          <div className="card-preview-badges">
             {savedCard.status && (
-              <span
-                className="px-[10px] py-[5px] rounded-[8px] text-[12px] font-semibold"
-                style={{
-                  backgroundColor: "#E7EEFF",
-                  color: "#2563EB",
-                  fontFamily: "Inter, sans-serif",
-                }}
-              >
-                {savedCard.status}
-              </span>
+              <span className="card-preview-status">{savedCard.status}</span>
             )}
             <span
-              className="px-[10px] py-[5px] rounded-[8px] text-[12px] font-semibold"
+              className="card-preview-priority"
               style={{
                 backgroundColor: priorityStyle.bg,
                 color: priorityStyle.color,
@@ -229,68 +185,35 @@ const CardFormPage = () => {
             </span>
           </div>
 
-          <h2
-            className="text-[22px] font-bold mb-[8px]"
-            style={{ color: "#18184C", fontFamily: "Inter, sans-serif" }}
-          >
-            {savedCard.title}
-          </h2>
+          <h2 className="card-preview-title-text">{savedCard.title}</h2>
 
-          <p
-            className="text-[15px] mb-[18px]"
-            style={{
-              color: "#8E93A1",
-              fontFamily: "Inter, sans-serif",
-              lineHeight: "22px",
-            }}
-          >
-            {savedCard.description}
-          </p>
+          <p className="card-preview-description">{savedCard.description}</p>
 
-          <div
-            className="w-full h-[1px] mb-[18px]"
-            style={{ backgroundColor: "#E6E7ED" }}
-          />
+          <div className="card-preview-divider" />
 
-          <div className="flex gap-[40px] mb-[18px]">
+          <div className="card-preview-meta">
             <div>
-              <p
-                className="text-[11px] font-semibold mb-[4px]"
-                style={{ color: "#8E93A1", fontFamily: "Inter, sans-serif" }}
-              >
-                ASSIGNEE
-              </p>
-              <p
-                className="text-[15px] font-semibold"
-                style={{ color: "#18184C", fontFamily: "Inter, sans-serif" }}
-              >
+              <p className="card-preview-meta-label">ASSIGNEE</p>
+              <p className="card-preview-meta-value">
                 {savedCard.assignee || "Not assigned"}
               </p>
             </div>
             <div>
-              <p
-                className="text-[11px] font-semibold mb-[4px]"
-                style={{ color: "#8E93A1", fontFamily: "Inter, sans-serif" }}
-              >
-                DEADLINE
-              </p>
-              <p
-                className="text-[15px] font-semibold"
-                style={{ color: "#18184C", fontFamily: "Inter, sans-serif" }}
-              >
+              <p className="card-preview-meta-label">DEADLINE</p>
+              <p className="card-preview-meta-value">
                 {savedCard.deadline || "Not set"}
               </p>
             </div>
           </div>
 
           {savedTags.length > 0 && (
-            <div className="flex gap-[10px] mb-[18px]">
+            <div className="card-preview-tags">
               {savedTags.map((tagName) => {
                 const tag = AVAILABLE_TAGS.find((t) => t.name === tagName);
                 return tag ? (
                   <span
                     key={tag.name}
-                    className="px-[10px] py-[5px] rounded-[8px] text-[12px] font-semibold"
+                    className="card-preview-tag"
                     style={{
                       backgroundColor: tag.bg,
                       color: tag.color,
@@ -305,50 +228,26 @@ const CardFormPage = () => {
           )}
 
           {savedImages.length > 0 && (
-            <div className="flex gap-[10px]">
+            <div className="card-preview-images">
               {savedImages.map((img) => (
-                <div
-                  key={img.id}
-                  className="w-[90px] h-[60px] rounded-[10px] overflow-hidden"
-                  style={{ backgroundColor: "#CFD8E7" }}
-                >
-                  <img
-                    src={img.url}
-                    alt={img.name}
-                    className="w-full h-full object-cover"
-                  />
+                <div key={img.id} className="card-preview-image">
+                  <img src={img.url} alt={img.name} />
                 </div>
               ))}
             </div>
           )}
         </div>
 
-        <div className="flex gap-[12px] mt-[24px]">
+        <div className="card-preview-actions">
           <button
             onClick={handleCancel}
-            className="px-[28px] py-[13px] rounded-[14px] transition-all hover:bg-gray-50 cursor-pointer"
-            style={{
-              border: "1.5px solid #E6E7ED",
-              fontFamily: "Inter, sans-serif",
-              fontWeight: 600,
-              fontSize: "14px",
-              color: "#8E93A1",
-            }}
+            className="card-form-btn card-form-btn--cancel"
           >
             ← Back to Form
           </button>
           <button
             onClick={handleEdit}
-            className="px-[28px] py-[13px] rounded-[14px] transition-all hover:opacity-90 active:scale-[0.98] cursor-pointer"
-            style={{
-              backgroundColor: "#18184C",
-              boxShadow: "0px 4px 12px 0px rgba(24, 24, 76, 0.2)",
-              fontFamily: "Inter, sans-serif",
-              fontWeight: 600,
-              fontSize: "14px",
-              color: "#FFFFFF",
-              border: "none",
-            }}
+            className="card-form-btn card-form-btn--submit"
           >
             Edit Card
           </button>
@@ -357,92 +256,76 @@ const CardFormPage = () => {
     );
   }
 
-  // Форма создания/редактирования
   return (
-    <div className="p-[24px]">
-      <h1
-        className="text-[26px] font-bold mb-[24px]"
-        style={{
-          color: "#18184C",
-          fontFamily: "Inter, sans-serif",
-          fontWeight: 700,
-        }}
-      >
+    <div className="card-form-page">
+      <h1 className="card-form-title">
         {isEditing ? "Edit Card" : "Create New Card"}
       </h1>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div
-          className="bg-white rounded-[20px] p-[28px]"
-          style={{ boxShadow: "0px 2px 12px 0px rgba(0, 0, 0, 0.04)" }}
-        >
-          <div className="grid grid-cols-2 gap-[28px]">
+        <div className="card-form-container">
+          <div className="card-form-grid">
             {/* Левая колонка */}
-            <div className="flex flex-col gap-[24px]">
-              <div className="flex flex-col gap-[6px]">
-                <label style={labelStyle}>
-                  Title <span className="text-red-500">*</span>
+            <div className="card-form-column">
+              <div className="card-form-field">
+                <label
+                  className={`card-form-label ${errors.title ? "card-form-label--error" : ""}`}
+                >
+                  Title{" "}
+                  <span
+                    className={`card-form-label__required ${errors.title ? "card-form-label__required--error" : ""}`}
+                  >
+                    *
+                  </span>
                 </label>
                 <input
                   type="text"
                   placeholder="Enter card title"
-                  className="w-full h-[45px] px-[16px] outline-none transition-all"
-                  style={{
-                    ...inputStyle,
-                    ...placeholderStyle,
-                    border: errors.title
-                      ? "1.5px solid #EA3A3A"
-                      : "1.5px solid transparent",
-                    backgroundColor: errors.title ? "#FFF2F2" : "#F2F3F9",
-                  }}
+                  className={`card-form-input ${errors.title ? "card-form-input--error" : ""}`}
                   {...register("title")}
                 />
                 {errors.title && (
-                  <p className="text-sm text-[#EA3A3A]">
-                    {errors.title.message}
-                  </p>
+                  <p className="card-form-error">{errors.title.message}</p>
                 )}
               </div>
 
-              <div className="flex flex-col gap-[6px]">
-                <label style={labelStyle}>
-                  Description <span className="text-red-500">*</span>
+              <div className="card-form-field">
+                <label
+                  className={`card-form-label ${errors.description ? "card-form-label--error" : ""}`}
+                >
+                  Description{" "}
+                  <span
+                    className={`card-form-label__required ${errors.description ? "card-form-label__required--error" : ""}`}
+                  >
+                    *
+                  </span>
                 </label>
                 <textarea
                   placeholder="Enter detailed description..."
-                  className="w-full h-[110px] px-[16px] py-[12px] outline-none resize-none transition-all"
-                  style={{
-                    ...inputStyle,
-                    ...placeholderStyle,
-                    border: errors.description
-                      ? "1.5px solid #EA3A3A"
-                      : "1.5px solid transparent",
-                    backgroundColor: errors.description ? "#FFF2F2" : "#F2F3F9",
-                  }}
+                  className={`card-form-textarea ${errors.description ? "card-form-textarea--error" : ""}`}
                   {...register("description")}
                 />
                 {errors.description && (
-                  <p className="text-sm text-[#EA3A3A]">
+                  <p className="card-form-error">
                     {errors.description.message}
                   </p>
                 )}
               </div>
 
-              <div className="flex flex-col gap-[6px]">
-                <label style={labelStyle}>
-                  Priority <span className="text-red-500">*</span>
+              <div className="card-form-field">
+                <label
+                  className={`card-form-label ${errors.priority ? "card-form-label--error" : ""}`}
+                >
+                  Priority{" "}
+                  <span
+                    className={`card-form-label__required ${errors.priority ? "card-form-label__required--error" : ""}`}
+                  >
+                    *
+                  </span>
                 </label>
-                <div className="relative">
+                <div className="card-form-select-wrapper">
                   <select
-                    className="w-full h-[45px] px-[16px] outline-none appearance-none cursor-pointer transition-all"
-                    style={{
-                      ...inputStyle,
-                      ...placeholderStyle,
-                      border: errors.priority
-                        ? "1.5px solid #EA3A3A"
-                        : "1.5px solid transparent",
-                      backgroundColor: errors.priority ? "#FFF2F2" : "#F2F3F9",
-                    }}
+                    className={`card-form-select ${errors.priority ? "card-form-select--error" : ""}`}
                     {...register("priority")}
                   >
                     <option value="">Select priority</option>
@@ -452,29 +335,17 @@ const CardFormPage = () => {
                       </option>
                     ))}
                   </select>
-                  <span className="absolute right-[16px] top-1/2 -translate-y-1/2 pointer-events-none text-[#8E93A1]">
-                    ▼
-                  </span>
+                  <span className="card-form-select-arrow">▼</span>
                 </div>
                 {errors.priority && (
-                  <p className="text-sm text-[#EA3A3A]">
-                    {errors.priority.message}
-                  </p>
+                  <p className="card-form-error">{errors.priority.message}</p>
                 )}
               </div>
 
-              <div className="flex flex-col gap-[6px]">
-                <label style={labelStyle}>Status</label>
-                <div className="relative">
-                  <select
-                    className="w-full h-[45px] px-[16px] outline-none appearance-none cursor-pointer"
-                    style={{
-                      ...inputStyle,
-                      ...placeholderStyle,
-                      border: "1.5px solid transparent",
-                    }}
-                    {...register("status")}
-                  >
+              <div className="card-form-field">
+                <label className="card-form-label">Status</label>
+                <div className="card-form-select-wrapper">
+                  <select className="card-form-select" {...register("status")}>
                     <option value="">Select status</option>
                     {STATUS_OPTIONS.map((option) => (
                       <option key={option} value={option}>
@@ -482,25 +353,18 @@ const CardFormPage = () => {
                       </option>
                     ))}
                   </select>
-                  <span className="absolute right-[16px] top-1/2 -translate-y-1/2 pointer-events-none text-[#8E93A1]">
-                    ▼
-                  </span>
+                  <span className="card-form-select-arrow">▼</span>
                 </div>
               </div>
             </div>
 
             {/* Правая колонка */}
-            <div className="flex flex-col gap-[24px]">
-              <div className="flex flex-col gap-[6px]">
-                <label style={labelStyle}>Assignee</label>
-                <div className="relative">
+            <div className="card-form-column">
+              <div className="card-form-field">
+                <label className="card-form-label">Assignee</label>
+                <div className="card-form-select-wrapper">
                   <select
-                    className="w-full h-[45px] px-[16px] outline-none appearance-none cursor-pointer"
-                    style={{
-                      ...inputStyle,
-                      ...placeholderStyle,
-                      border: "1.5px solid transparent",
-                    }}
+                    className="card-form-select"
                     {...register("assignee")}
                   >
                     <option value="">Select assignee</option>
@@ -510,52 +374,40 @@ const CardFormPage = () => {
                       </option>
                     ))}
                   </select>
-                  <span className="absolute right-[16px] top-1/2 -translate-y-1/2 pointer-events-none text-[#8E93A1]">
-                    ▼
-                  </span>
+                  <span className="card-form-select-arrow">▼</span>
                 </div>
               </div>
 
-              <div className="flex flex-col gap-[6px]">
-                <label style={labelStyle}>Deadline</label>
-                <div className="relative">
+              <div className="card-form-field">
+                <label className="card-form-label">Deadline</label>
+                <div className="card-form-select-wrapper">
                   <input
                     type="date"
-                    className="w-full h-[45px] px-[16px] outline-none cursor-pointer"
-                    style={{
-                      ...inputStyle,
-                      ...placeholderStyle,
-                      border: "1.5px solid transparent",
-                    }}
+                    className="card-form-input"
                     {...register("deadline")}
                   />
-                  <span className="absolute right-[16px] top-1/2 -translate-y-1/2 pointer-events-none">
-                    📅
-                  </span>
+                  <span className="card-form-date-icon">📅</span>
                 </div>
               </div>
 
-              <div className="flex flex-col gap-[6px]">
-                <label style={labelStyle}>Tags</label>
-                <div className="flex gap-[8px] flex-wrap">
+              <div className="card-form-field">
+                <label className="card-form-label">Tags</label>
+                <div className="card-form-tags">
                   {AVAILABLE_TAGS.map((tag) => (
                     <button
                       key={tag.name}
                       type="button"
                       onClick={() => toggleTag(tag.name)}
-                      className="px-[10px] py-[5px] rounded-[8px] text-[12px] font-semibold transition-all cursor-pointer"
-                      style={{
-                        backgroundColor: selectedTags.includes(tag.name)
-                          ? tag.bg
-                          : "#F2F3F9",
-                        color: selectedTags.includes(tag.name)
-                          ? tag.color
-                          : "#8E93A1",
-                        fontFamily: "Inter, sans-serif",
-                        border: selectedTags.includes(tag.name)
-                          ? "1px solid transparent"
-                          : "1px solid #E6E7ED",
-                      }}
+                      className={`card-form-tag ${
+                        selectedTags.includes(tag.name)
+                          ? "card-form-tag--selected"
+                          : "card-form-tag--unselected"
+                      }`}
+                      style={
+                        selectedTags.includes(tag.name)
+                          ? { backgroundColor: tag.bg, color: tag.color }
+                          : {}
+                      }
                     >
                       {tag.name}
                     </button>
@@ -563,92 +415,50 @@ const CardFormPage = () => {
                 </div>
               </div>
 
-              <div className="flex flex-col gap-[6px]">
-                <label style={labelStyle}>
+              <div className="card-form-field">
+                <label className="card-form-label">
                   Images ({uploadedImages.length})
                 </label>
 
                 {uploadedImages.length > 0 ? (
-                  <div className="flex gap-[10px] flex-wrap">
+                  <div className="card-form-uploaded">
                     {uploadedImages.map((img) => (
-                      <div
-                        key={img.id}
-                        className="relative w-[195px] h-[90px] rounded-[10px] p-[4px]"
-                        style={{ backgroundColor: "#F2F3F9" }}
-                      >
-                        <div
-                          className="w-full h-[64px] rounded-[8px] overflow-hidden"
-                          style={{ backgroundColor: "#CFD8E7" }}
-                        >
-                          <img
-                            src={img.url}
-                            alt={img.name}
-                            className="w-full h-full object-cover"
-                          />
+                      <div key={img.id} className="card-form-image-item">
+                        <div className="card-form-image-preview">
+                          <img src={img.url} alt={img.name} />
                         </div>
                         <button
                           type="button"
                           onClick={() => removeImage(img.id)}
-                          className="absolute top-[6px] right-[6px] text-[#EA3A3A] hover:text-red-700 cursor-pointer transition-colors"
-                          style={{
-                            fontSize: "12px",
-                            border: "none",
-                            backgroundColor: "transparent",
-                          }}
+                          className="card-form-image-remove"
                         >
                           🗑
                         </button>
-                        <p
-                          className="text-[10px] mt-[4px] truncate"
-                          style={{
-                            color: "#8E93A1",
-                            fontFamily: "Inter, sans-serif",
-                          }}
-                        >
-                          {img.name}
-                        </p>
+                        <p className="card-form-image-name">{img.name}</p>
                       </div>
                     ))}
 
                     <button
                       type="button"
                       onClick={() => fileInputRef.current?.click()}
-                      className="w-[195px] h-[90px] rounded-[10px] flex items-center justify-center text-[24px] transition-all hover:bg-gray-50 cursor-pointer"
-                      style={{ border: "2px dashed #E6E7ED", color: "#8E93A1" }}
+                      className="card-form-add-image"
                     >
                       +
                     </button>
                   </div>
                 ) : (
                   <div
-                    className={`w-full h-[120px] rounded-[14px] flex flex-col items-center justify-center gap-[6px] cursor-pointer transition-all ${isDragOver ? "bg-blue-50" : "hover:bg-gray-50"}`}
-                    style={{
-                      border: isDragOver
-                        ? "2px dashed #2563EB"
-                        : "2px dashed #E6E7ED",
-                    }}
+                    className={`card-form-dropzone ${isDragOver ? "card-form-dropzone--dragover" : ""}`}
                     onClick={() => fileInputRef.current?.click()}
                     onDrop={handleDrop}
                     onDragOver={handleDragOver}
                     onDragLeave={handleDragLeave}
                   >
-                    <span className="text-[28px]">☁️</span>
-                    <p
-                      className="text-[13px]"
-                      style={{
-                        color: "#8E93A1",
-                        fontFamily: "Inter, sans-serif",
-                      }}
-                    >
+                    <span className="card-form-dropzone-icon">☁️</span>
+                    <p className="card-form-dropzone-text">
                       Drag & drop images here
                     </p>
-                    <p
-                      className="text-[13px] font-semibold"
-                      style={{
-                        color: "#2563EB",
-                        fontFamily: "Inter, sans-serif",
-                      }}
-                    >
+                    <p className="card-form-dropzone-browse">
                       or click to browse
                     </p>
                   </div>
@@ -659,7 +469,7 @@ const CardFormPage = () => {
                   type="file"
                   accept="image/*"
                   multiple
-                  className="hidden"
+                  className="card-form-hidden-input"
                   onChange={(e) => handleFileUpload(e.target.files)}
                 />
               </div>
@@ -667,34 +477,18 @@ const CardFormPage = () => {
           </div>
         </div>
 
-        <div className="flex justify-end gap-[12px] mt-[24px]">
+        <div className="card-form-actions">
           <button
             type="button"
             onClick={handleCancel}
-            className="px-[28px] py-[13px] rounded-[14px] transition-all hover:bg-gray-50 cursor-pointer"
-            style={{
-              border: "1.5px solid #E6E7ED",
-              fontFamily: "Inter, sans-serif",
-              fontWeight: 600,
-              fontSize: "14px",
-              color: "#8E93A1",
-            }}
+            className="card-form-btn card-form-btn--cancel"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={isSubmitting}
-            className="px-[28px] py-[13px] rounded-[14px] transition-all hover:opacity-90 active:scale-[0.98] disabled:opacity-50 cursor-pointer"
-            style={{
-              backgroundColor: "#18184C",
-              boxShadow: "0px 4px 12px 0px rgba(24, 24, 76, 0.2)",
-              fontFamily: "Inter, sans-serif",
-              fontWeight: 600,
-              fontSize: "14px",
-              color: "#FFFFFF",
-              border: "none",
-            }}
+            className="card-form-btn card-form-btn--submit"
           >
             {isSubmitting
               ? "Saving..."

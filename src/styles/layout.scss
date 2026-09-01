@@ -1,0 +1,241 @@
+@import "variables";
+
+.layout {
+  min-height: 100vh;
+  display: flex;
+  background-color: $color-bg;
+}
+
+.sidebar {
+  background: $color-white;
+  display: flex;
+  flex-direction: column;
+
+  &--collapsed {
+    width: 72px;
+    padding: 20px 10px;
+    box-shadow: 2px 0px 8px 0px rgba(0, 0, 0, 0.04);
+  }
+
+  &--expanded {
+    width: 240px;
+    padding: 24px 20px;
+    gap: 4px;
+    box-shadow: 4px 0px 20px 0px rgba(0, 0, 0, 0.08);
+  }
+
+  &__top {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__logo-btn {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border-radius: $radius-lg;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #f9fafb;
+    }
+
+    &--collapsed {
+      width: 52px;
+      height: 44px;
+      margin: 0 auto;
+      justify-content: center;
+    }
+
+    &--expanded {
+      width: 200px;
+      height: 44px;
+      padding-bottom: 16px;
+      gap: 10px;
+    }
+  }
+
+  &__logo-icon {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    font-size: 28px;
+    line-height: 28px;
+  }
+
+  &__logo-text {
+    font-family: $font-family;
+    font-weight: 700;
+    font-size: 20px;
+    height: 24px;
+    line-height: 100%;
+    color: $color-text-primary;
+    white-space: nowrap;
+  }
+
+  &__divider {
+    width: 100%;
+    height: 1px;
+    background-color: $color-border-light;
+    margin: 16px 0;
+  }
+
+  &__spacer {
+    height: 24px;
+  }
+
+  &__menu-label {
+    font-family: $font-family;
+    font-weight: 600;
+    font-size: 11px;
+    line-height: 100%;
+    letter-spacing: 1px;
+    color: $color-text-secondary;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  &__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__nav-link {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    text-decoration: none;
+    border-radius: $radius-lg;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #f9fafb;
+    }
+
+    &--collapsed {
+      width: 52px;
+      height: 58px;
+      margin: 0 auto;
+      padding: 10px 0;
+      flex-direction: column;
+      gap: 4px;
+      justify-content: center;
+    }
+
+    &--expanded {
+      width: 200px;
+      height: 44px;
+      padding: 12px 14px;
+      gap: 12px;
+    }
+
+    &--active {
+      background-color: $color-blue-bg;
+
+      &:hover {
+        background-color: $color-blue-bg;
+      }
+    }
+  }
+
+  &__nav-icon {
+    font-size: 20px;
+    line-height: 20px;
+    flex-shrink: 0;
+  }
+
+  &__nav-label-short {
+    font-family: $font-family;
+    font-size: 10px;
+    line-height: 100%;
+
+    &--active {
+      font-weight: 600;
+      color: $color-blue;
+    }
+
+    &--inactive {
+      font-weight: 500;
+      color: $color-text-secondary;
+    }
+  }
+
+  &__nav-label-full {
+    font-family: $font-family;
+    font-size: 15px;
+    line-height: 100%;
+    white-space: nowrap;
+
+    &--active {
+      font-weight: 600;
+      color: $color-blue;
+    }
+
+    &--inactive {
+      font-weight: 500;
+      color: $color-text-primary;
+    }
+  }
+
+  &__bottom {
+    margin-top: auto;
+  }
+
+  &__logout-btn {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border-radius: $radius-lg;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #f9fafb;
+    }
+
+    &--collapsed {
+      width: 52px;
+      height: 54px;
+      margin: 0 auto;
+      padding: 10px 0;
+      flex-direction: column;
+      gap: 4px;
+      justify-content: center;
+    }
+
+    &--expanded {
+      width: 200px;
+      height: 44px;
+      padding: 12px 14px;
+      gap: 12px;
+    }
+  }
+
+  &__logout-icon {
+    font-size: 20px;
+    line-height: 20px;
+    flex-shrink: 0;
+  }
+
+  &__logout-label-short {
+    font-family: $font-family;
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 100%;
+    color: $color-text-secondary;
+  }
+
+  &__logout-label-full {
+    font-family: $font-family;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 100%;
+    color: $color-red;
+    white-space: nowrap;
+  }
+}
+
+.main-content {
+  flex: 1;
+  overflow-y: auto;
+}
