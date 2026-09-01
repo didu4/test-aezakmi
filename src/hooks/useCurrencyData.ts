@@ -1,38 +1,7 @@
 import { useState, useEffect } from "react";
-import {
-  getCurrentRates,
-  getAvailableCurrencies,
-  getCurrencyHistory,
-} from "../api/currencyAPI";
+import { getCurrentRates, getCurrencyHistory } from "../api/currencyAPI";
 import type { CurrencyData, CurrencyHistory } from "../types";
 
-// Хук для получения списка валют
-export const useCurrencies = () => {
-  const [currencies, setCurrencies] = useState<Record<string, string>>({});
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchCurrencies = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const data = await getAvailableCurrencies();
-        setCurrencies(data);
-      } catch {
-        setError("Ошибка загрузки списка валют");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCurrencies();
-  }, []); // Пустой массив - выполнится один раз при монтировании
-
-  return { currencies, loading, error };
-};
-
-// Хук для получения текущих курсов
 export const useRates = (baseCurrency: string = "USD") => {
   const [rates, setRates] = useState<CurrencyData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -53,12 +22,10 @@ export const useRates = (baseCurrency: string = "USD") => {
     };
 
     fetchRates();
-  }, [baseCurrency]); // Выполнится при изменении baseCurrency
-
+  }, [baseCurrency]);
   return { rates, loading, error };
 };
 
-// Хук для получения истории курса
 export const useCurrencyHistory = (
   from: string,
   to: string,
@@ -85,7 +52,7 @@ export const useCurrencyHistory = (
     };
 
     fetchHistory();
-  }, [from, to, days]); // Выполнится при изменении любого из параметров
+  }, [from, to, days]);
 
   return { history, loading, error };
 };

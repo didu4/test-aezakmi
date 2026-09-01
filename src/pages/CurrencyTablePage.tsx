@@ -1,10 +1,6 @@
 // src/pages/CurrencyTablePage.tsx
 import { useState, useMemo, useEffect } from "react";
-import {
-  useCurrencies,
-  useRates,
-  useCurrencyHistory,
-} from "../hooks/useCurrencyData";
+import { useRates, useCurrencyHistory } from "../hooks/useCurrencyData";
 import { getCurrencyFlag } from "../api/currencyAPI";
 import Loading from "../components/UI/Loading";
 import Error from "../components/UI/Error";
@@ -20,8 +16,6 @@ import {
 import "../styles/currency.scss";
 
 const CurrencyTablePage = () => {
-  const { loading: currenciesLoading, error: currenciesError } =
-    useCurrencies();
   const { rates, loading: ratesLoading, error: ratesError } = useRates("USD");
   const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null);
   const [selectedPeriod, setSelectedPeriod] = useState<string>("1M");
@@ -128,16 +122,12 @@ const CurrencyTablePage = () => {
     return labels[period] || "Monthly dynamics";
   };
 
-  if (currenciesLoading || ratesLoading) {
+  if (ratesLoading) {
     return <Loading message="Загрузка данных о валютах..." />;
   }
 
-  if (currenciesError || ratesError) {
-    return (
-      <Error
-        message={currenciesError || ratesError || "Ошибка загрузки данных"}
-      />
-    );
+  if (ratesError) {
+    return <Error message={ratesError || "Ошибка загрузки данных"} />;
   }
 
   if (isMobile && selectedCurrency) {

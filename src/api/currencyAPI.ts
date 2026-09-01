@@ -19,33 +19,16 @@ interface CbrResponse {
   Valute: Record<string, CbrValute>;
 }
 
-// Получение списка валют
-export const getAvailableCurrencies = async () => {
-  const response = await axios.get<CbrResponse>(`${CBR_API}/daily_json.js`);
-  const currencies: Record<string, string> = {};
-
-  Object.entries(response.data.Valute).forEach(([code, info]) => {
-    currencies[code] = info.Name;
-  });
-
-  currencies["RUB"] = "Российский рубль";
-
-  return currencies;
-};
-
-// Получение текущих курсов
 export const getCurrentRates = async (base: string = "USD") => {
   const response = await axios.get<CbrResponse>(`${CBR_API}/daily_json.js`);
   const data = response.data;
 
-  // Получаем курсы относительно RUB
   const ratesInRub: Record<string, number> = {};
   Object.entries(data.Valute).forEach(([code, info]) => {
     ratesInRub[code] = info.Value / info.Nominal;
   });
   ratesInRub["RUB"] = 1;
 
-  // Конвертируем в базовую валюту
   const rates: Record<string, number> = {};
   const baseRate = ratesInRub[base] || 1;
 
@@ -60,17 +43,14 @@ export const getCurrentRates = async (base: string = "USD") => {
   };
 };
 
-// Получение истории курсов (мок-данные)
 export const getCurrencyHistory = async (
   from: string = "USD",
   to: string = "EUR",
   days: number = 30,
 ) => {
-  // Используем from для базового курса
   const dates: string[] = [];
   const rates: Record<string, number> = {};
 
-  // Базовые значения для разных валют относительно USD
   const baseValues: Record<string, number> = {
     USD: 1,
     EUR: 0.85,
@@ -86,7 +66,6 @@ export const getCurrencyHistory = async (
   const baseValue = baseValues[to] || 1;
   const fromValue = baseValues[from] || 1;
 
-  // Конвертируем относительно from
   const conversionRate = baseValue / fromValue;
 
   for (let i = days; i >= 0; i--) {
@@ -95,7 +74,6 @@ export const getCurrencyHistory = async (
     const dateStr = date.toISOString().split("T")[0];
     dates.push(dateStr);
 
-    // Генерируем значения с небольшим трендом
     const trend = (days - i) * 0.0001;
     const noise = (Math.random() - 0.5) * 0.01;
     rates[dateStr] = conversionRate + trend + noise;
@@ -104,9 +82,7 @@ export const getCurrencyHistory = async (
   return { dates, rates };
 };
 
-// Флаги валют
 export const getCurrencyFlag = (currencyCode: string): string => {
-  // Для RUB используем флаг России
   if (currencyCode === "RUB") {
     return "https://flagcdn.com/w40/ru.png";
   }
