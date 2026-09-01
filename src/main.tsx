@@ -3,14 +3,11 @@ import { createRoot } from "react-dom/client";
 import "./styles/main.scss";
 import App from "./App";
 import { AuthProvider } from "./context/AuthProvider";
-import { CardProvider } from "./context/CardProvider";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <AuthProvider>
-      <CardProvider>
-        <App />
-      </CardProvider>
+      <App />
     </AuthProvider>
   </StrictMode>,
 );

@@ -1,11 +1,17 @@
 import { useState, useRef, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCard } from "../context/useCard";
+
 import { cardSchema } from "../utils/validation";
 import type { CardFormData } from "../utils/validation";
-import type { UploadedImage } from "../context/CardContext";
+
 import "../styles/card-form.scss";
+
+interface UploadedImage {
+  id: string;
+  name: string;
+  url: string;
+}
 
 const AVAILABLE_TAGS = [
   { name: "Design", bg: "#EEE4FF", color: "#814EE0" },
@@ -29,20 +35,14 @@ const STATUS_OPTIONS = ["To Do", "In Progress", "Done"];
 const ASSIGNEE_OPTIONS = ["User 1", "User 2", "User 3"];
 
 const CardFormPage = () => {
-  const {
-    savedCard,
-    setSavedCard,
-    savedTags,
-    setSavedTags,
-    savedImages,
-    setSavedImages,
-  } = useCard();
+  const [savedCard, setSavedCard] = useState<CardFormData | null>(null);
+  const [savedTags, setSavedTags] = useState<string[]>([]);
+  const [savedImages, setSavedImages] = useState<UploadedImage[]>([]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [selectedTags, setSelectedTags] = useState<string[]>(savedTags);
-  const [uploadedImages, setUploadedImages] =
-    useState<UploadedImage[]>(savedImages);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [uploadedImages, setUploadedImages] = useState<UploadedImage[]>([]);
   const [isDragOver, setIsDragOver] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
