@@ -1,7 +1,6 @@
 import { createContext } from "react";
 import type { User, LoginCredentials } from "../types";
 
-// Тип для контекста
 export interface AuthContextType {
   isAuthenticated: boolean;
   user: User | null;

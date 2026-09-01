@@ -9,10 +9,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Публичный маршрут */}
         <Route path="/login" element={<LoginPage />} />
 
-        {/* Защищенные маршруты */}
         <Route
           path="/"
           element={
@@ -26,7 +24,6 @@ function App() {
           <Route path="create-card" element={<CardFormPage />} />
         </Route>
 
-        {/* Редирект на главную */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

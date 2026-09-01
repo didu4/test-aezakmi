@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-// Схема для логина
 export const loginSchema = z.object({
   email: z
     .string()
@@ -12,7 +11,6 @@ export const loginSchema = z.object({
     .min(6, "Password must be at least 6 characters"),
 });
 
-// Схема для канбан-карточки
 export const cardSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
