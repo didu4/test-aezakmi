@@ -4,7 +4,6 @@ import type { AuthContextType } from "./AuthContext";
 import type { LoginCredentials } from "../types";
 import { mockLogin, mockLogout } from "../api/authAPI";
 
-// Функция начальной инициализации
 const initializeAuth = () => {
   const token = localStorage.getItem("auth_token");
   const userStr = localStorage.getItem("auth_user");
@@ -26,11 +25,12 @@ const initializeAuth = () => {
       user: JSON.parse(userStr),
     };
   } catch {
+    localStorage.removeItem("auth_token");
+    localStorage.removeItem("auth_user");
     return { isAuthenticated: false, user: null };
   }
 };
 
-// Компонент-провайдер
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [authState, setAuthState] = useState(initializeAuth);
   const [loading, setLoading] = useState(false);
@@ -41,6 +41,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setError(null);
     try {
       const response = await mockLogin(credentials);
+
+      localStorage.setItem("auth_token", response.token);
+      localStorage.setItem("auth_user", JSON.stringify(response.user));
+
       setAuthState({ isAuthenticated: true, user: response.user });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Ошибка входа");
@@ -54,6 +58,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setLoading(true);
     try {
       await mockLogout();
+
+      localStorage.removeItem("auth_token");
+      localStorage.removeItem("auth_user");
+
       setAuthState({ isAuthenticated: false, user: null });
     } finally {
       setLoading(false);
