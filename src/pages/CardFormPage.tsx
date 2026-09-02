@@ -174,12 +174,7 @@ const CardFormPage = () => {
               <span className="card-preview-status">{savedCard.status}</span>
             )}
             <span
-              className="card-preview-priority"
-              style={{
-                backgroundColor: priorityStyle.bg,
-                color: priorityStyle.color,
-                fontFamily: "Inter, sans-serif",
-              }}
+              className={`card-preview-priority card-preview-priority--${savedCard.priority.toLowerCase()}`}
             >
               {priorityStyle.icon} {priorityStyle.label}
             </span>
@@ -213,12 +208,7 @@ const CardFormPage = () => {
                 return tag ? (
                   <span
                     key={tag.name}
-                    className="card-preview-tag"
-                    style={{
-                      backgroundColor: tag.bg,
-                      color: tag.color,
-                      fontFamily: "Inter, sans-serif",
-                    }}
+                    className={`card-preview-tag card-preview-tag--${tag.name.toLowerCase()}`}
                   >
                     {tag.name}
                   </span>
@@ -400,14 +390,9 @@ const CardFormPage = () => {
                       onClick={() => toggleTag(tag.name)}
                       className={`card-form-tag ${
                         selectedTags.includes(tag.name)
-                          ? "card-form-tag--selected"
+                          ? `card-form-tag--selected card-form-tag--${tag.name.toLowerCase()}`
                           : "card-form-tag--unselected"
                       }`}
-                      style={
-                        selectedTags.includes(tag.name)
-                          ? { backgroundColor: tag.bg, color: tag.color }
-                          : {}
-                      }
                     >
                       {tag.name}
                     </button>

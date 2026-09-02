@@ -216,6 +216,21 @@
       background-color: #e5e6ec;
     }
   }
+
+  &--design {
+    background-color: $color-purple-bg;
+    color: $color-purple;
+  }
+
+  &--frontend {
+    background-color: $color-blue-bg;
+    color: $color-blue;
+  }
+
+  &--urgent {
+    background-color: $color-red-bg;
+    color: $color-red;
+  }
 }
 
 .card-form-images {
@@ -443,6 +458,21 @@
   font-family: $font-family;
   font-weight: 600;
   font-size: 12px;
+
+  &--low {
+    background-color: $color-green-bg;
+    color: $color-green;
+  }
+
+  &--medium {
+    background-color: $color-orange-bg;
+    color: $color-orange;
+  }
+
+  &--high {
+    background-color: $color-red-bg;
+    color: $color-red;
+  }
 }
 
 .card-preview-title-text {
@@ -504,6 +534,21 @@
   font-family: $font-family;
   font-weight: 600;
   font-size: 12px;
+
+  &--design {
+    background-color: $color-purple-bg;
+    color: $color-purple;
+  }
+
+  &--frontend {
+    background-color: $color-blue-bg;
+    color: $color-blue;
+  }
+
+  &--urgent {
+    background-color: $color-red-bg;
+    color: $color-red;
+  }
 }
 
 .card-preview-images {
